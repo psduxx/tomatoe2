@@ -30,17 +30,16 @@
   <div id="label-container"></div>
 
   <script type="text/javascript">
-    const URL = "https://teachablemachine.withgoogle.com/models/rBQmk5A8M/";
+    const MODEL_URL = "https://teachablemachine.withgoogle.com/models/rBQmk5A8M/";
     let model, maxPredictions;
 
     async function loadModel() {
-      const modelURL = URL + "model.json";
-      const metadataURL = URL + "metadata.json";
+      const modelURL = MODEL_URL + "model.json";
+      const metadataURL = MODEL_URL + "metadata.json";
 
       model = await tmImage.load(modelURL, metadataURL);
       maxPredictions = model.getTotalClasses();
 
-      // 初始化标签容器
       const labelContainer = document.getElementById("label-container");
       labelContainer.innerHTML = "";
       for (let i = 0; i < maxPredictions; i++) {
@@ -48,13 +47,12 @@
       }
     }
 
-    // 当用户上传图片时触发
     document.getElementById("imageUpload").addEventListener("change", async (event) => {
       const file = event.target.files[0];
       if (!file || !model) return;
 
       const imgElement = document.getElementById("uploadedImage");
-      imgElement.src = URL.createObjectURL(file);
+      imgElement.src = URL.createObjectURL(file); // ✅ 这里的 URL 是原生对象，现在没问题了
       imgElement.style.display = "block";
 
       imgElement.onload = async () => {
@@ -67,7 +65,6 @@
       };
     });
 
-    // 页面加载后初始化模型
     window.onload = loadModel;
   </script>
 </body>
